@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+    stages {
+        stage('Non-Parallel Stage') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Parallel Stage') {
+            when {
+                branch 'master'
+            }
+            failFast true
+            parallel {
+                stage('database') {
+                    agent {
+                        label "master"
+                    }
+                    steps {
+                        //sh 'docker-compose up'
+                        echo 'docker-compose up'
+                    }
+                }
+                stage('test') {
+                    agent {
+                        label "master"
+                    }
+                    steps {
+                        retry(3) {
+                            sh 'npm test'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

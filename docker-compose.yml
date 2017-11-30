@@ -1,0 +1,10 @@
+posgres:
+  image: library/postgres:latest
+  ports:
+    - "5432:5432"
+  environment:
+    #- POSTGRES_DB=express_tdd 
+    #CREATE DATABASE express_tdd;
+    - POSTGRES_DB=express_tdd_testing
+    - POSTGRES_PASSWORD=1234
+    - POSTGRES_USER=user
